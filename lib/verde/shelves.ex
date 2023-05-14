@@ -50,9 +50,33 @@ defmodule Verde.Shelves do
 
   """
   def create_book(attrs \\ %{}) do
-    %Book{}
-    |> Book.changeset(attrs)
-    |> Repo.insert()
+    content =
+      attrs.temp_file_path
+      |> File.read()
+      |> elem(1)
+
+    content_type = extract_content_type(attrs.temp_file_path)
+
+    attrs =
+      attrs
+      |> Map.put(:content_type, content_type)
+      |> Map.put(:file_name, hash_and_encode_content(content))
+
+    changeset = Book.changeset(%Book{}, attrs)
+
+    file_path =
+      "#{changeset.changes.file_dir}/#{changeset.changes.file_name}.#{changeset.changes.file_extension}"
+
+    case changeset.valid? do
+      true ->
+        File.mkdir_p(changeset.changes.file_dir)
+        File.write(file_path, content)
+
+      false ->
+        {:error, :reason}
+    end
+
+    # |> Repo.insert()
   end
 
   @doc """
@@ -100,5 +124,20 @@ defmodule Verde.Shelves do
   """
   def change_book(%Book{} = book, attrs \\ %{}) do
     Book.changeset(book, attrs)
+  end
+  
+  defp hash_and_encode_content(content) do
+    :crypto.hash(:blake2b, content)
+    |> Base.url_encode64()
+  end
+
+  defp extract_content_type(file_path) do
+    %{type: type, subtype: subtype} =
+      file_path
+      |> FileInfo.get_info()
+      |> Map.values()
+      |> List.first()
+
+    "#{type}/#{subtype}"
   end
 end
