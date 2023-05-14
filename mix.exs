@@ -32,6 +32,7 @@ defmodule Verde.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:arangox, "~> 0.5"},
       {:argon2_elixir, "~> 3.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ecto_sql, "~> 3.6"},
@@ -54,7 +55,8 @@ defmodule Verde.MixProject do
       {:swoosh, "~> 1.3"},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
       {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"}
+      {:telemetry_poller, "~> 1.0"},
+      {:velocy, "~> 0.1"}
     ]
   end
 
