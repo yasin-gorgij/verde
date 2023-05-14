@@ -68,6 +68,13 @@ defmodule VerdeWeb.Router do
       on_mount: [{VerdeWeb.UserAuth, :ensure_authenticated}] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+
+      live "/book", BookLive.Index, :index
+      live "/book/new", BookLive.Index, :new
+      live "/book/:id/edit", BookLive.Index, :edit
+
+      live "/book/:id", BookLive.Show, :show
+      live "/book/:id/show/edit", BookLive.Show, :edit
     end
   end
 
