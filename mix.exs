@@ -32,6 +32,7 @@ defmodule Verde.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:argon2_elixir, "~> 3.0"},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
