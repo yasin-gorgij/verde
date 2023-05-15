@@ -17,9 +17,10 @@ defmodule Verde.Application do
       # Start Finch
       {Finch, name: Verde.Finch},
       # Start the Endpoint (http/https)
-      VerdeWeb.Endpoint
+      VerdeWeb.Endpoint,
       # Start a worker by calling: Verde.Worker.start_link(arg)
       # {Verde.Worker, arg}
+      {Arangox, Application.get_env(:verde, Arangox)}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

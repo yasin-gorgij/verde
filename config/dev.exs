@@ -1,5 +1,13 @@
 import Config
 
+# Configure graph database
+config :verde, Arangox,
+  endpoints: "http://localhost:8529",
+  username: "root",
+  password: "openSesame",
+  pool_size: 10,
+  name: Verde.Arangox
+
 # Configure your database
 config :verde, Verde.Repo,
   database: Path.expand("../verde_dev.db", Path.dirname(__ENV__.file)),
