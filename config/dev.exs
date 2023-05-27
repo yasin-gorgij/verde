@@ -3,6 +3,7 @@ import Config
 # Configure graph database
 config :verde, Arangox,
   endpoints: "http://localhost:8529",
+  database: "verde_dev",
   username: "root",
   password: "openSesame",
   pool_size: 10,
