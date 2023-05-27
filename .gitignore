@@ -42,5 +42,6 @@ npm-debug.log
 *.db
 *.db-*
 
-# GNU Emacs backup files
+# GNU Emacs generated files
 *~
+dev-emacs-elixir-format.exs
