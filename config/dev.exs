@@ -6,6 +6,7 @@ config :verde, Arangox,
   username: "root",
   password: "openSesame",
   pool_size: 10,
+  client: Arangox.VelocyClient,
   name: Verde.Arangox
 
 # Configure your database
