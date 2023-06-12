@@ -4,9 +4,12 @@ defmodule Verde.Shelves do
   """
 
   import Ecto.Query, warn: false
-  alias Verde.Repo
 
+  alias Verde.Repo
   alias Verde.Shelves.Book
+
+  @conn Verde.Arangox
+  @graph_name "shelves"
 
   @doc """
   Returns the list of book.
@@ -43,10 +46,10 @@ defmodule Verde.Shelves do
   ## Examples
 
       iex> create_book(%{field: value})
-      {:ok, %Book{}}
+      {:ok, :success}
 
       iex> create_book(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, :reason}
 
   """
   def create_book(attrs \\ %{}) do
@@ -55,22 +58,18 @@ defmodule Verde.Shelves do
       |> File.read()
       |> elem(1)
 
-    content_type = extract_content_type(attrs.temp_file_path)
-
     attrs =
       attrs
-      |> Map.put(:content_type, content_type)
-      |> Map.put(:file_name, hash_and_encode_content(content))
+      |> Map.put(:content_type, extract_content_type(attrs.temp_file_path))
+      |> Map.put(:content_hash, hash_then_base64(content, :blake2b))
 
     changeset = Book.changeset(%Book{}, attrs)
-
-    file_path =
-      "#{changeset.changes.file_dir}/#{changeset.changes.file_name}.#{changeset.changes.file_extension}"
+    file_path = "#{changeset.changes.content_hash}.#{changeset.changes.extension}"
 
     case changeset.valid? do
       true ->
-        File.mkdir_p(changeset.changes.file_dir)
         File.write(file_path, content)
+        {:ok, :success}
 
       false ->
         {:error, :reason}
@@ -125,9 +124,51 @@ defmodule Verde.Shelves do
   def change_book(%Book{} = book, attrs \\ %{}) do
     Book.changeset(book, attrs)
   end
-  
-  defp hash_and_encode_content(content) do
-    :crypto.hash(:blake2b, content)
+
+  def prepare_arangodb() do
+    with {:ok, _} <- Arangox.post(@conn, "/_api/gharial", %{name: @graph_name}),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/gharial/#{@graph_name}/vertex", %{collection: "books"}),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/gharial/#{@graph_name}/vertex", %{collection: "categories"}),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/gharial/#{@graph_name}/vertex", %{collection: "users"}),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/gharial/#{@graph_name}/edge", %{
+             collection: "has",
+             from: ["users"],
+             to: ["books"]
+           }),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/gharial/#{@graph_name}/edge", %{
+             collection: "attaches_to",
+             from: ["categories"],
+             to: ["books"]
+           }),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/index?collection=books", %{
+             type: "persistent",
+             unique: true,
+             fields: ["content_hash"]
+           }),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/index?collection=users", %{
+             type: "persistent",
+             unique: true,
+             fields: ["email"]
+           }),
+         {:ok, _} <-
+           Arangox.post(@conn, "/_api/index?collection=categories", %{
+             type: "persistent",
+             unique: true,
+             fields: ["name"]
+           }) do
+      {:ok, "Graph, vertex and edge collections and unique indexes are created"}
+    end
+  end
+
+  defp hash_then_base64(content, hash_algorithm) do
+    :crypto.hash(hash_algorithm, content)
     |> Base.url_encode64()
   end
 
