@@ -4,20 +4,19 @@ defmodule Verde.Shelves.Book do
 
   schema "book" do
     field :authors, {:array, :string}
+    field :content_hash, :string
     field :content_type, :string
+    field :creation_date, :utc_datetime
     field :description, :string
     field :edition, :string
-    field :file_dir, :string
-    field :file_extension, :string
-    field :file_name, :string
-    field :page_number, :integer
-    field :published_in, :string
+    field :extension, :string
+    field :latest_page, :string
     field :publisher, :string
+    field :publishing_year, :integer
     field :read_count, :integer
+    field :reading_status, :string
     field :title, :string
     field :volume, :string
-
-    timestamps()
   end
 
   @supported_content_types %{
@@ -56,22 +55,25 @@ defmodule Verde.Shelves.Book do
     book
     |> cast(attrs, [
       :authors,
+      :content_hash,
       :content_type,
+      :creation_date,
       :description,
       :edition,
-      :file_dir,
-      :file_extension,
-      :file_name,
-      :page_number,
-      :published_in,
+      :extension,
+      :latest_page,
       :publisher,
+      :publishing_year,
       :read_count,
+      :reading_status,
       :title,
       :volume
     ])
-    |> validate_required([:title, :content_type])
+    |> validate_required([:title, :content_hash, :content_type])
     |> validate_length(:title, min: 1, max: 200)
     |> validate_content_type()
+    |> validate_required([:extension])
+    |> put_change(:creation_date, DateTime.utc_now())
   end
 
   defp validate_content_type(changeset) do
@@ -79,10 +81,10 @@ defmodule Verde.Shelves.Book do
 
     case Enum.member?(content_types, changeset.changes.content_type) do
       true ->
-        file_extension = Map.get(@supported_content_types, changeset.changes.content_type)
+        extension = Map.get(@supported_content_types, changeset.changes.content_type)
 
         changeset
-        |> put_change(:file_extension, file_extension)
+        |> put_change(:extension, extension)
 
       false ->
         changeset
