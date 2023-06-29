@@ -43,6 +43,7 @@ defmodule Verde.MixProject do
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
+      {:mix_audit, "~> 2.0", only: [:dev, :test], runtime: false},
       {:mix_unused, "~> 0.4.0"},
       {:phoenix, "~> 1.7.2"},
       {:phoenix_ecto, "~> 4.4"},
