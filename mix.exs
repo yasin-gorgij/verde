@@ -35,6 +35,7 @@ defmodule Verde.MixProject do
       {:arangox, "~> 0.5"},
       {:argon2_elixir, "~> 3.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.6"},
       {:ecto_sqlite3, ">= 0.0.0"},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
