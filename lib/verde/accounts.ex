@@ -6,7 +6,7 @@ defmodule Verde.Accounts do
   import Ecto.Query, warn: false
   alias Verde.Repo
 
-  alias Verde.Accounts.{User, UserToken, UserNotifier}
+  alias Verde.Accounts.{User, UserNotifier, UserToken}
 
   ## Database getters
 
