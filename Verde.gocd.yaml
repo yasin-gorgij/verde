@@ -1,0 +1,86 @@
+format_version: 10
+pipelines:
+  Verde:
+    group: defaultGroup
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: -1
+    materials:
+      git-57808ac:
+        git: https://github.com/yasin-gorgij/verde
+        shallow_clone: false
+        auto_update: true
+        branch: main
+    stages:
+    - Build:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+          allow_only_on_success: false
+        jobs:
+          build-test:
+            timeout: 0
+            tasks:
+            - exec:
+                arguments:
+                - deps.get
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - hex.audit
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - deps.unlock
+                - --check-unused
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - compile
+                - --all-warnings
+                - --warning-as-errors
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - deps.audit
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - format
+                - --dry-run
+                - --check-formatted
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - credo
+                - --strict
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - sobelow
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - dialyzer
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - doctor
+                command: mix
+                run_if: passed
+            - exec:
+                arguments:
+                - test
+                command: mix
+                run_if: passed
