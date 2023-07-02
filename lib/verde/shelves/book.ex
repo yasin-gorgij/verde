@@ -18,7 +18,7 @@ defmodule Verde.Shelves.Book do
     field :latest_page, :string
     field :publisher, :string
     field :publishing_year, :integer
-    field :reading_status, :string
+    field :reading_state, :string
     field :title, :string
     field :volume, :string
   end
@@ -61,20 +61,20 @@ defmodule Verde.Shelves.Book do
   def changeset(book, attrs) do
     book
     |> cast(attrs, [
-          :authors,
-          :completion_count,
-          :completion_date,
-          :cover_extension,
-          :cover_hash,
-          :cover_type,
-          :creation_date,
-          :description,
-          :edition,
-          :publisher,
-          :publishing_year
-          :reading_status,
-          :title,
-          :volume
+      :authors,
+      :completion_count,
+      :completion_date,
+      :cover_extension,
+      :cover_hash,
+      :cover_type,
+      :creation_date,
+      :description,
+      :edition,
+      :publisher,
+      :publishing_year,
+      :reading_state,
+      :title,
+      :volume
     ])
     |> validate_required([:title, :cover_hash, :cover_type])
     |> validate_length(:title, min: 1, max: 200)
