@@ -52,7 +52,7 @@ defmodule Verde.Shelves do
       {:error, :reason}
 
   """
-  def create_book(attrs = %{cover: _, title: _}) do
+  def create_book(%{cover: _, title: _} = attrs) do
     attrs =
       attrs
       |> Map.put(:cover_type, extract_mime_type(attrs.cover))
