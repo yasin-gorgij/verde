@@ -6,15 +6,15 @@ defmodule Verde.Shelves.Book do
     field :authors, {:array, :string}
     field :completion_count, :integer
     field :completion_date, :utc_datetime
+    field :content_extension, :string
     field :content_hash, :string
     field :content_type, :string
-    field :cover_image_extension, :string
-    field :cover_image_hash, :string
-    field :cover_image_type, :string
+    field :cover_extension, :string
+    field :cover_hash, :string
+    field :cover_type, :string
     field :creation_date, :utc_datetime
     field :description, :string
     field :edition, :string
-    field :extension, :string
     field :latest_page, :string
     field :publisher, :string
     field :publishing_year, :integer
@@ -50,7 +50,7 @@ defmodule Verde.Shelves.Book do
     "text/x-markdown" => "md"
   }
 
-  @supported_cover_image_types %{
+  @supported_cover_types %{
     "image/jpeg" => "jpeg",
     "image/png" => "png",
     "image/svg+xml" => "svg",
@@ -61,40 +61,37 @@ defmodule Verde.Shelves.Book do
   def changeset(book, attrs) do
     book
     |> cast(attrs, [
-      :authors,
-      :completion_count,
-      :content_hash,
-      :content_type,
-      :cover_image_extension,
-      :cover_image_hash,
-      :cover_image_type,
-      :creation_date,
-      :description,
-      :edition,
-      :extension,
-      :latest_page,
-      :publisher,
-      :publishing_year,
-      :reading_status,
-      :title,
-      :volume
+          :authors,
+          :completion_count,
+          :completion_date,
+          :cover_extension,
+          :cover_hash,
+          :cover_type,
+          :creation_date,
+          :description,
+          :edition,
+          :publisher,
+          :publishing_year
+          :reading_status,
+          :title,
+          :volume
     ])
-    |> validate_required([:title, :cover_image_hash, :cover_image_type])
+    |> validate_required([:title, :cover_hash, :cover_type])
     |> validate_length(:title, min: 1, max: 200)
-    |> validate_cover_image_type()
-    |> validate_required([:extension])
+    |> validate_cover_type()
+    |> validate_required([:cover_extension])
     |> put_change(:creation_date, DateTime.utc_now())
   end
 
-  defp validate_cover_image_type(changeset) do
-    cover_image_types = Map.keys(@supported_cover_image_types)
+  defp validate_cover_type(changeset) do
+    cover_types = Map.keys(@supported_cover_types)
 
-    case Enum.member?(cover_image_types, changeset.changes.cover_image_type) do
+    case Enum.member?(cover_types, changeset.changes.cover_type) do
       true ->
-        cover_image_extension = Map.get(@supported_cover_image_types, changeset.changes.cover_image_type)
+        cover_extension = Map.get(@supported_cover_types, changeset.changes.cover_type)
 
         changeset
-        |> put_change(:cover_image_extension, cover_image_extension)
+        |> put_change(:cover_extension, cover_extension)
 
       false ->
         changeset
