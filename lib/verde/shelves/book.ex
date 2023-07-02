@@ -6,9 +6,9 @@ defmodule Verde.Shelves.Book do
     field :authors, {:array, :string}
     field :completion_count, :integer
     field :completion_date, :utc_datetime
-    field :cover_image_extension, :string
     field :content_hash, :string
     field :content_type, :string
+    field :cover_image_extension, :string
     field :cover_image_hash, :string
     field :cover_image_type, :string
     field :creation_date, :utc_datetime
