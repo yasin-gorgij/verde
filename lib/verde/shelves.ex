@@ -52,24 +52,17 @@ defmodule Verde.Shelves do
       {:error, :reason}
 
   """
-  def create_book(attrs \\ %{}) do
-    content =
-      attrs.temp_file_path
-      |> File.read()
-      |> elem(1)
-
+  def create_book(attrs = %{cover: _, title: _}) do
     attrs =
       attrs
-      |> Map.put(:content_type, extract_content_type(attrs.temp_file_path))
-      |> Map.put(:content_hash, hash_then_base64(content, :blake2b))
+      |> Map.put(:cover_type, extract_mime_type(attrs.cover))
+      |> Map.put(:cover_hash, hash_then_base64(attrs.cover, :blake2b))
 
     changeset = Book.changeset(%Book{}, attrs)
-    file_path = "#{changeset.changes.content_hash}.#{changeset.changes.extension}"
 
     case changeset.valid? do
       true ->
-        File.write(file_path, content)
-        {:ok, :success}
+        {:ok, changeset}
 
       false ->
         {:error, :reason}
@@ -172,12 +165,20 @@ defmodule Verde.Shelves do
     |> Base.url_encode64()
   end
 
-  defp extract_content_type(file_path) do
+  defp extract_mime_type(content) do
+    temp_file = "/tmp/#{:crypto.strong_rand_bytes(30) |> Base.url_encode64()}"
+
+    # TODO: pattern match on result of File operation
+    File.write(temp_file, content)
+
     %{type: type, subtype: subtype} =
-      file_path
+      temp_file
       |> FileInfo.get_info()
       |> Map.values()
       |> List.first()
+
+    # TODO: pattern match on result of File operation
+    File.rm(temp_file)
 
     "#{type}/#{subtype}"
   end
