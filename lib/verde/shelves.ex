@@ -56,7 +56,8 @@ defmodule Verde.Shelves do
     attrs =
       attrs
       |> Map.put(:cover_type, extract_mime_type(attrs.cover))
-      |> Map.put(:cover_hash, hash_then_base64(attrs.cover, :blake2b))
+      |> Map.put(:cover_hash, hash_and_base64(attrs.cover, :blake2b))
+      |> Map.put(:completion_count, 0)
 
     changeset = Book.changeset(%Book{}, attrs)
 
@@ -160,7 +161,7 @@ defmodule Verde.Shelves do
     end
   end
 
-  defp hash_then_base64(content, hash_algorithm) do
+  defp hash_and_base64(content, hash_algorithm) do
     :crypto.hash(hash_algorithm, content)
     |> Base.url_encode64()
   end
