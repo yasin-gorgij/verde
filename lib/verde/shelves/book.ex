@@ -20,6 +20,7 @@ defmodule Verde.Shelves.Book do
     field :publishing_year, :integer
     field :reading_state, :string
     field :title, :string
+    field :translator, :string
     field :volume, :string
   end
 
@@ -63,7 +64,6 @@ defmodule Verde.Shelves.Book do
     |> cast(attrs, [
       :authors,
       :completion_count,
-      :completion_date,
       :cover_extension,
       :cover_hash,
       :cover_type,
@@ -74,11 +74,13 @@ defmodule Verde.Shelves.Book do
       :publishing_year,
       :reading_state,
       :title,
+      :translator,
       :volume
     ])
     |> validate_required([:title, :cover_hash, :cover_type])
     |> validate_length(:title, min: 1, max: 200)
     |> validate_cover_type()
+    |> validate_number(:completion_count, equal_to: 0)
     |> validate_required([:cover_extension])
     |> put_change(:creation_date, DateTime.utc_now())
   end
