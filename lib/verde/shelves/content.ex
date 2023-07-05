@@ -4,6 +4,8 @@ defmodule Verde.Shelves.Content do
 
   schema "contents" do
     field :data, :binary
+    field :hash, :string
+    field :user_id, :string
 
     timestamps()
   end
@@ -11,7 +13,7 @@ defmodule Verde.Shelves.Content do
   @doc false
   def changeset(content, attrs) do
     content
-    |> cast(attrs, [:data])
-    |> validate_required([:data])
+    |> cast(attrs, [:user_id, :hash, :data])
+    |> validate_required([:user_id, :hash, :data])
   end
 end
