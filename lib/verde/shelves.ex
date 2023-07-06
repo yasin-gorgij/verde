@@ -7,6 +7,7 @@ defmodule Verde.Shelves do
 
   alias Verde.Repo
   alias Verde.Shelves.Book
+  alias Verde.Shelves.Content
 
   @conn Verde.Arangox
   @graph_name "shelves"
@@ -59,11 +60,15 @@ defmodule Verde.Shelves do
       |> Map.put(:cover_hash, hash_and_base64(attrs.cover, :blake2b))
       |> Map.put(:completion_count, 0)
 
-    changeset = Book.changeset(%Book{}, attrs)
+    book_changeset = Book.changeset(%Book{}, attrs)
 
-    case changeset.valid? do
+    content_changeset =
+      Content.changeset(%Content{}, %{data_id: "123", data: attrs.cover})
+
+    case book_changeset.valid? do
       true ->
-        {:ok, changeset}
+        Repo.insert(content_changeset)
+        {:ok, Repo.all(Content)}
 
       false ->
         {:error, :reason}

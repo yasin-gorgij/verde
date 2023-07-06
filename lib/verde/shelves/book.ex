@@ -91,9 +91,7 @@ defmodule Verde.Shelves.Book do
     case Enum.member?(cover_types, changeset.changes.cover_type) do
       true ->
         cover_extension = Map.get(@supported_cover_types, changeset.changes.cover_type)
-
-        changeset
-        |> put_change(:cover_extension, cover_extension)
+        put_change(changeset, :cover_extension, cover_extension)
 
       false ->
         changeset
