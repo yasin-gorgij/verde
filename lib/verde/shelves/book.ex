@@ -3,24 +3,23 @@ defmodule Verde.Shelves.Book do
   import Ecto.Changeset
 
   schema "book" do
+    field :description, :string
+    field :title, :string
+    field :translator, :string
+    field :content_type, :string
     field :authors, {:array, :string}
     field :completion_count, :integer
     field :completion_date, :utc_datetime
     field :content_extension, :string
     field :content_hash, :string
-    field :content_type, :string
     field :cover_extension, :string
     field :cover_hash, :string
     field :cover_type, :string
-    field :creation_date, :utc_datetime
-    field :description, :string
     field :edition, :string
     field :latest_page, :string
     field :publisher, :string
     field :publishing_year, :integer
     field :reading_state, :string
-    field :title, :string
-    field :translator, :string
     field :volume, :string
   end
 
@@ -67,7 +66,6 @@ defmodule Verde.Shelves.Book do
       :cover_extension,
       :cover_hash,
       :cover_type,
-      :creation_date,
       :description,
       :edition,
       :publisher,
@@ -82,7 +80,6 @@ defmodule Verde.Shelves.Book do
     |> validate_cover_type()
     |> validate_number(:completion_count, equal_to: 0)
     |> validate_required([:cover_extension])
-    |> put_change(:creation_date, DateTime.utc_now())
   end
 
   defp validate_cover_type(changeset) do

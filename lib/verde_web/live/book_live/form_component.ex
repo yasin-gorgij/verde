@@ -26,17 +26,22 @@ defmodule VerdeWeb.BookLive.FormComponent do
           label="Authors"
           options={[{"Option 1", "option1"}, {"Option 2", "option2"}]}
         />
+        <.input field={@form[:completion_count]} type="number" label="Completion count" />
+        <.input field={@form[:completion_date]} type="datetime-local" label="Completion date" />
+        <.input field={@form[:content_extension]} type="text" label="Content extension" />
+        <.input field={@form[:content_hash]} type="text" label="Content hash" />
         <.input field={@form[:content_type]} type="text" label="Content type" />
+        <.input field={@form[:cover_extension]} type="text" label="Cover extension" />
+        <.input field={@form[:cover_hash]} type="text" label="Cover hash" />
+        <.input field={@form[:cover_type]} type="text" label="Cover type" />
         <.input field={@form[:description]} type="text" label="Description" />
         <.input field={@form[:edition]} type="text" label="Edition" />
-        <.input field={@form[:file_extension]} type="text" label="File extension" />
-        <.input field={@form[:file_name]} type="text" label="File name" />
-        <.input field={@form[:file_dir]} type="text" label="File dir" />
-        <.input field={@form[:page_number]} type="number" label="Page number" />
-        <.input field={@form[:published_in]} type="text" label="Published in" />
+        <.input field={@form[:latest_page]} type="text" label="Latest page" />
         <.input field={@form[:publisher]} type="text" label="Publisher" />
-        <.input field={@form[:read_count]} type="number" label="Read count" />
+        <.input field={@form[:publishing_year]} type="number" label="Publishing year" />
+        <.input field={@form[:reading_state]} type="text" label="Reading state" />
         <.input field={@form[:title]} type="text" label="Title" />
+        <.input field={@form[:translator]} type="text" label="Translator" />
         <.input field={@form[:volume]} type="text" label="Volume" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Book</.button>

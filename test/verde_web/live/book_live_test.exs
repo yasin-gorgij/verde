@@ -4,51 +4,9 @@ defmodule VerdeWeb.BookLiveTest do
   import Phoenix.LiveViewTest
   import Verde.ShelvesFixtures
 
-  @create_attrs %{
-    authors: ["option1", "option2"],
-    content_type: "some content_type",
-    description: "some description",
-    edition: "some edition",
-    file_dir: "some file_dir",
-    file_extension: "some file_extension",
-    file_name: "some file_name",
-    page_number: 42,
-    published_in: "some published_in",
-    publisher: "some publisher",
-    read_count: 42,
-    title: "some title",
-    volume: "some volume"
-  }
-  @update_attrs %{
-    authors: ["option1"],
-    content_type: "some updated content_type",
-    description: "some updated description",
-    edition: "some updated edition",
-    file_dir: "some updated file_dir",
-    file_extension: "some updated file_extension",
-    file_name: "some updated file_name",
-    page_number: 43,
-    published_in: "some updated published_in",
-    publisher: "some updated publisher",
-    read_count: 43,
-    title: "some updated title",
-    volume: "some updated volume"
-  }
-  @invalid_attrs %{
-    authors: [],
-    content_type: nil,
-    description: nil,
-    edition: nil,
-    file_dir: nil,
-    file_extension: nil,
-    file_name: nil,
-    page_number: nil,
-    published_in: nil,
-    publisher: nil,
-    read_count: nil,
-    title: nil,
-    volume: nil
-  }
+  @create_attrs %{description: "some description", title: "some title", translator: "some translator", content_type: "some content_type", authors: ["option1", "option2"], completion_count: 42, completion_date: "2023-07-06T14:15:00Z", content_extension: "some content_extension", content_hash: "some content_hash", cover_extension: "some cover_extension", cover_hash: "some cover_hash", cover_type: "some cover_type", edition: "some edition", latest_page: "some latest_page", publisher: "some publisher", publishing_year: 42, reading_state: "some reading_state", volume: "some volume"}
+  @update_attrs %{description: "some updated description", title: "some updated title", translator: "some updated translator", content_type: "some updated content_type", authors: ["option1"], completion_count: 43, completion_date: "2023-07-07T14:15:00Z", content_extension: "some updated content_extension", content_hash: "some updated content_hash", cover_extension: "some updated cover_extension", cover_hash: "some updated cover_hash", cover_type: "some updated cover_type", edition: "some updated edition", latest_page: "some updated latest_page", publisher: "some updated publisher", publishing_year: 43, reading_state: "some updated reading_state", volume: "some updated volume"}
+  @invalid_attrs %{description: nil, title: nil, translator: nil, content_type: nil, authors: [], completion_count: nil, completion_date: nil, content_extension: nil, content_hash: nil, cover_extension: nil, cover_hash: nil, cover_type: nil, edition: nil, latest_page: nil, publisher: nil, publishing_year: nil, reading_state: nil, volume: nil}
 
   defp create_book(_) do
     book = book_fixture()
@@ -62,7 +20,7 @@ defmodule VerdeWeb.BookLiveTest do
       {:ok, _index_live, html} = live(conn, ~p"/book")
 
       assert html =~ "Listing Book"
-      assert html =~ book.content_type
+      assert html =~ book.description
     end
 
     test "saves new book", %{conn: conn} do
@@ -85,7 +43,7 @@ defmodule VerdeWeb.BookLiveTest do
 
       html = render(index_live)
       assert html =~ "Book created successfully"
-      assert html =~ "some content_type"
+      assert html =~ "some description"
     end
 
     test "updates book in listing", %{conn: conn, book: book} do
@@ -108,7 +66,7 @@ defmodule VerdeWeb.BookLiveTest do
 
       html = render(index_live)
       assert html =~ "Book updated successfully"
-      assert html =~ "some updated content_type"
+      assert html =~ "some updated description"
     end
 
     test "deletes book in listing", %{conn: conn, book: book} do
@@ -126,7 +84,7 @@ defmodule VerdeWeb.BookLiveTest do
       {:ok, _show_live, html} = live(conn, ~p"/book/#{book}")
 
       assert html =~ "Show Book"
-      assert html =~ book.content_type
+      assert html =~ book.description
     end
 
     test "updates book within modal", %{conn: conn, book: book} do
@@ -149,7 +107,7 @@ defmodule VerdeWeb.BookLiveTest do
 
       html = render(show_live)
       assert html =~ "Book updated successfully"
-      assert html =~ "some updated content_type"
+      assert html =~ "some updated description"
     end
   end
 end

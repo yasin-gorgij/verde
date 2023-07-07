@@ -11,18 +11,23 @@ defmodule Verde.ShelvesFixtures do
     {:ok, book} =
       attrs
       |> Enum.into(%{
-        authors: ["option1", "option2"],
-        content_type: "some content_type",
         description: "some description",
-        edition: "some edition",
-        file_dir: "some file_dir",
-        file_extension: "some file_extension",
-        file_name: "some file_name",
-        page_number: 42,
-        published_in: "some published_in",
-        publisher: "some publisher",
-        read_count: 42,
         title: "some title",
+        translator: "some translator",
+        content_type: "some content_type",
+        authors: ["option1", "option2"],
+        completion_count: 42,
+        completion_date: ~U[2023-07-06 14:15:00Z],
+        content_extension: "some content_extension",
+        content_hash: "some content_hash",
+        cover_extension: "some cover_extension",
+        cover_hash: "some cover_hash",
+        cover_type: "some cover_type",
+        edition: "some edition",
+        latest_page: "some latest_page",
+        publisher: "some publisher",
+        publishing_year: 42,
+        reading_state: "some reading_state",
         volume: "some volume"
       })
       |> Verde.Shelves.create_book()

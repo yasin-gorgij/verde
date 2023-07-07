@@ -7,7 +7,7 @@ defmodule VerdeWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_verde_key",
-    signing_salt: "zX2xOf0j",
+    signing_salt: "ymL8hunj",
     same_site: "Lax"
   ]
 

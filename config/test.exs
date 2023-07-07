@@ -17,7 +17,7 @@ config :verde, Verde.Repo,
 # you can enable the server option below.
 config :verde, VerdeWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
-  secret_key_base: "OqFbiEtDqIfBcs+WmoYHwvUetz7ZzwEoCnY4qHUs2veL0wjC8hfz5cEGpZocBB+b",
+  secret_key_base: "sUs2kpr+EgF9Fx+5BlHe2xaCwUpu4vZvpbjq3rFItJeveqZ+G+MrOiVPW0kxV7zl",
   server: false
 
 # In test we don't send emails.

@@ -18,7 +18,7 @@ config :verde, VerdeWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Verde.PubSub,
-  live_view: [signing_salt: "gkGHvTzM"]
+  live_view: [signing_salt: "fKv4llxW"]
 
 # Configures the mailer
 #

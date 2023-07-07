@@ -13,17 +13,22 @@
   row_click={fn {_id, book} -> JS.navigate(~p"/book/#{book}") end}
 >
   <:col :let={{_id, book}} label="Authors"><%= book.authors %></:col>
+  <:col :let={{_id, book}} label="Completion count"><%= book.completion_count %></:col>
+  <:col :let={{_id, book}} label="Completion date"><%= book.completion_date %></:col>
+  <:col :let={{_id, book}} label="Content extension"><%= book.content_extension %></:col>
+  <:col :let={{_id, book}} label="Content hash"><%= book.content_hash %></:col>
   <:col :let={{_id, book}} label="Content type"><%= book.content_type %></:col>
+  <:col :let={{_id, book}} label="Cover extension"><%= book.cover_extension %></:col>
+  <:col :let={{_id, book}} label="Cover hash"><%= book.cover_hash %></:col>
+  <:col :let={{_id, book}} label="Cover type"><%= book.cover_type %></:col>
   <:col :let={{_id, book}} label="Description"><%= book.description %></:col>
   <:col :let={{_id, book}} label="Edition"><%= book.edition %></:col>
-  <:col :let={{_id, book}} label="File extension"><%= book.file_extension %></:col>
-  <:col :let={{_id, book}} label="File name"><%= book.file_name %></:col>
-  <:col :let={{_id, book}} label="File dir"><%= book.file_dir %></:col>
-  <:col :let={{_id, book}} label="Page number"><%= book.page_number %></:col>
-  <:col :let={{_id, book}} label="Published in"><%= book.published_in %></:col>
+  <:col :let={{_id, book}} label="Latest page"><%= book.latest_page %></:col>
   <:col :let={{_id, book}} label="Publisher"><%= book.publisher %></:col>
-  <:col :let={{_id, book}} label="Read count"><%= book.read_count %></:col>
+  <:col :let={{_id, book}} label="Publishing year"><%= book.publishing_year %></:col>
+  <:col :let={{_id, book}} label="Reading state"><%= book.reading_state %></:col>
   <:col :let={{_id, book}} label="Title"><%= book.title %></:col>
+  <:col :let={{_id, book}} label="Translator"><%= book.translator %></:col>
   <:col :let={{_id, book}} label="Volume"><%= book.volume %></:col>
   <:action :let={{_id, book}}>
     <div class="sr-only">

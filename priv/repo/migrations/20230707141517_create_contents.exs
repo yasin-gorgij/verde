@@ -8,7 +8,5 @@ defmodule Verde.Repo.Migrations.CreateContents do
 
       timestamps()
     end
-
-    create unique_index(:contents, [:data_id])
   end
 end
