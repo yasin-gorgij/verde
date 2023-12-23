@@ -10,3 +10,4 @@ Now you can visit localhost:4000 from your browser.
 
 Requirements:
 - PostgreSQL
+- S3 compatible object storage like MinIO
